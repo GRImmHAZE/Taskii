@@ -1,0 +1,64 @@
+<div class="task-container">
+  <div class="task-header">
+    <h1>📋 My Tasks</h1>
+    <button mat-raised-button class="add-btn" (click)="goToAdd()">➕ Add Task</button>
+  </div>
+
+  <div class="filters-section">
+    <mat-form-field appearance="fill" class="filter-field">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onFilterChange()">
+        @for (cat of categories; track cat) {
+          <mat-option [value]="cat">{{ cat }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="filter-field">
+      <mat-label>Priority</mat-label>
+      <mat-select [(ngModel)]="selectedPriority" (selectionChange)="onFilterChange()">
+        @for (pri of priorities; track pri) {
+          <mat-option [value]="pri">{{ pri }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (filteredTasks.length > 0) {
+    <div class="tasks-grid">
+      @for (task of filteredTasks; track $index) {
+        <mat-card>
+          <mat-card-title>
+            {{ task.title }}
+
+            @if (task.importance >= 4) {
+              <mat-chip color="warn">🔥 High</mat-chip>
+            } @else {
+              <mat-chip color="primary">Normal</mat-chip>
+            }
+
+            <mat-chip color="accent">{{ task.category }}</mat-chip>
+          </mat-card-title>
+
+          <mat-card-content>
+            <p>{{ task.description }}</p>
+            <p>🕒 Due: {{ task.deadline | date: 'shortDate' }}</p>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-icon-button color="primary" (click)="editTask(task._id!)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteTask(task._id!)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <p>No tasks found. Go add your first one! 🚀</p>
+    </div>
+  }
+</div>

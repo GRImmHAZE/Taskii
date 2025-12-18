@@ -1,0 +1,65 @@
+<div class="form-container">
+  <div class="form-header">
+    <button mat-icon-button (click)="goBack()" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>Create a Task</h2>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <form (ngSubmit)="saveTask()" #taskForm="ngForm">
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput name="title" [(ngModel)]="task.title" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput name="description" [(ngModel)]="task.description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Category</mat-label>
+          <mat-select name="category" [(ngModel)]="task.category">
+            @for (cat of ['Work', 'Personal', 'Study']; track cat) {
+              <mat-option [value]="cat">{{ cat }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Deadline</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="task.deadline"
+            name="deadline"
+            required
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Importance (1-5)</mat-label>
+          <input
+            matInput
+            type="number"
+            name="importance"
+            [(ngModel)]="task.importance"
+            min="1"
+            max="5"
+            required
+          />
+        </mat-form-field>
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit">Save Task</button>
+          <button mat-raised-button type="button" (click)="goBack()">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
